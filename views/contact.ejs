@@ -1,0 +1,34 @@
+<div class="card">
+  <h1>Contact Us</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/add">Add Note</a>
+    <a href="/profile">Profile</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <main>
+    <h2>Contact Form</h2>
+    <form method="POST" action="/contact">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">Send</button>
+    </form>
+
+    <% if (typeof message !== 'undefined') { %>
+      <p class="message"><%= message %></p>
+    <% } %>
+    <% if (typeof error !== 'undefined') { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+  </main>
+</div>
