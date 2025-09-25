@@ -3,7 +3,7 @@ const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const expressLayouts = require('express-ejs-layouts');
-const { notes, nextId } = require('./data/notes');
+const { notes, getNextId } = require('./data/notes');
 const notesRoutes = require('./routes/notes');
 
 const app = express();
@@ -101,7 +101,14 @@ app.post('/register', async (req, res) => {
     return res.render('register', { error: 'Username already exists' });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { id: users.length + 1, username, name: username, email, password: hashedPassword, createdAt: new Date() };
+  const user = { 
+    id: users.length + 1, 
+    username, 
+    name: username, 
+    email, 
+    password: hashedPassword, 
+    createdAt: new Date() 
+  };
   users.push(user);
   req.session.userId = user.id;
   res.redirect('/');
@@ -119,10 +126,10 @@ app.get('/add', requireAuth, (req, res) => {
 app.post('/add', requireAuth, async (req, res) => {
   const { title, content, category } = req.body;
   const newNote = {
-    id: nextId++,
+    id: getNextId(),
     title,
     content,
-    category,
+    category: category || 'General',
     userId: req.session.userId,
     date: new Date().toISOString()
   };

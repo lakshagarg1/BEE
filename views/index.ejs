@@ -1,12 +1,4 @@
 <div class="card">
-  <h1>Welcome to MyApp</h1>
-  <p>This is a modernized EJS app with light/dark mode support.</p>
-  <% if (!user) { %>
-    <a href="/register"><button>Get Started</button></a>
-  <% } else { %>
-    <a href="/profile"><button>Go to Profile</button></a>
-  <% } %>
-
   <h1>Notes App</h1>
   <p>Welcome, <%= username %>!</p>
   <nav>
@@ -39,31 +31,21 @@
 
   <div class="notes" aria-live="polite" aria-atomic="true">
     <% if (notes.length === 0) { %>
-    <p>No notes found.</p>
+      <p>No notes found. <a href="/add">Create your first note!</a></p>
     <% } else { %>
-    <% notes.forEach((note) => { %>
-    <article class="note" role="article" tabindex="0">
-      <h3><%= note.title %></h3>
-      <p><%= note.content %></p>
-      <small
-        >Category: <%= note.category %> | Date:
-        <%= new Date(note.date).toLocaleString() %></small
-      >
-      <div class="actions">
-        <a href="/edit/<%= note.id %>" class="btn btn-edit" aria-label="Edit note <%= note.title %>">Edit</a>
-        <form
-          method="POST"
-          action="/delete/<%= note.id %>"
-          style="display: inline"
-          onsubmit="return confirm('Delete this note?')"
-        >
-          <button type="submit" class="btn btn-delete" aria-label="Delete note <%= note.title %>">
-            Delete
-          </button>
-        </form>
-      </div>
-    </article>
-    <% }) %>
+      <% notes.forEach((note) => { %>
+        <article class="note" role="article" tabindex="0">
+          <h3><%= note.title %></h3>
+          <p><%= note.content %></p>
+          <small>Category: <%= note.category %> | Date: <%= new Date(note.date).toLocaleString() %></small>
+          <div class="actions">
+            <a href="/edit/<%= note.id %>" class="btn btn-edit" aria-label="Edit note <%= note.title %>">Edit</a>
+            <form method="POST" action="/delete/<%= note.id %>" style="display: inline" onsubmit="return confirm('Delete this note?')">
+              <button type="submit" class="btn btn-delete" aria-label="Delete note <%= note.title %>">Delete</button>
+            </form>
+          </div>
+        </article>
+      <% }) %>
     <% } %>
   </div>
 </div>

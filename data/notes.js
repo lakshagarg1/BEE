@@ -2,4 +2,8 @@
 let notes = [];
 let nextId = 1;
 
-module.exports = { notes, nextId };
+function getNextId() {
+  return nextId++;
+}
+
+module.exports = { notes, getNextId };

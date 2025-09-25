@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { notes, nextId } = require('../data/notes');
+const { notes, getNextId } = require('../data/notes');
 
 // Helper function to simulate async operation
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -47,7 +47,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       return res.status(400).json({ error: 'Title and content are required' });
     }
     const newNote = {
-      id: nextId(),
+      id: getNextId(),
       title,
       content,
       category: category || 'General',
