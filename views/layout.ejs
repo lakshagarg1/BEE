@@ -3,52 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title || "My App" %></title>
+  <title><%= title || "NotesApp - Your Digital Notebook" %></title>
   <link rel="stylesheet" href="/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <!-- Header & Navbar -->
-  <header>
-    <nav class="container">
-      <a href="/" class="logo">MyApp</a>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <% if (user) { %>
-          <li><a href="/profile">Profile</a></li>
-          <li><a href="/logout">Logout</a></li>
-        <% } else { %>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/register">Register</a></li>
-        <% } %>
-      </ul>
-      <button class="toggle-btn" onclick="toggleDarkMode()">🌙</button>
+  <header class="header">
+    <nav class="navbar container">
+      <div class="nav-brand">
+        <a href="/" class="logo">
+          <i class="fas fa-sticky-note"></i>
+          <span>NotesApp</span>
+        </a>
+      </div>
+      
+      <div class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+          <% if (user) { %>
+            <li><a href="/add" class="nav-link"><i class="fas fa-plus"></i> New Note</a></li>
+            <li><a href="/profile" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="/about" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="/logout" class="nav-link logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+          <% } else { %>
+            <li><a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/register" class="nav-link register-btn"><i class="fas fa-user-plus"></i> Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </nav>
   </header>
 
   <!-- Main Content -->
-  <main class="container">
-    <%- body %>
+  <main class="main">
+    <div class="container">
+      <%- body %>
+    </div>
   </main>
 
   <!-- Footer -->
-  <footer>
-    <p>&copy; <%= new Date().getFullYear() %> MyApp. All rights reserved.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4><i class="fas fa-sticky-note"></i> NotesApp</h4>
+          <p>Your digital notebook for capturing ideas, thoughts, and memories.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Features</h4>
+          <ul>
+            <li>Organize Notes</li>
+            <li>Search & Filter</li>
+            <li>Categories</li>
+            <li>Secure Storage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> NotesApp. Made with <i class="fas fa-heart"></i> for productivity.</p>
+      </div>
+    </div>
   </footer>
 
-  <!-- Dark Mode Script -->
+  <!-- Scripts -->
   <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      localStorage.setItem("theme", 
-        document.body.classList.contains("dark-mode") ? "dark" : "light");
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      const isDark = document.body.classList.contains('dark-theme');
+      const icon = document.getElementById('theme-icon');
+      icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
-    window.onload = () => {
-      if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
+
+    // Mobile Navigation
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      navToggle.classList.toggle('active');
+    });
+
+    // Initialize theme
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      const icon = document.getElementById('theme-icon');
+      
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        icon.className = 'fas fa-sun';
       }
-    };
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>

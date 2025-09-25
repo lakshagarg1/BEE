@@ -1,24 +1,148 @@
-<div class="card">
-  <h2>Welcome, <%= user.username %></h2>
-  <p>Email: <%= user.email %></p>
-  <p>Member since: <%= user.createdAt ? user.createdAt.toDateString() : 'N/A' %></p>
-  <a href="/"><button>My Notes</button></a>
+<div class="profile-page">
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="profile-info">
+        <h1><%= user.username %></h1>
+        <p class="profile-email"><%= user.email %></p>
+        <p class="profile-date">
+          <i class="fas fa-calendar-alt"></i>
+          Member since <%= user.createdAt ? user.createdAt.toDateString() : 'N/A' %>
+        </p>
+      </div>
+    </div>
 
-  <h2>Profile Information</h2>
-  <form method="POST" action="/profile">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" value="<%= user.username %>" readonly />
+    <div class="profile-content">
+      <div class="profile-section">
+        <h2>
+          <i class="fas fa-edit"></i>
+          Update Profile
+        </h2>
+        
+        <form method="POST" action="/profile" class="profile-form">
+          <div class="form-group">
+            <label for="username">
+              <i class="fas fa-user"></i>
+              Username
+            </label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              value="<%= user.username %>" 
+              readonly 
+              class="form-input readonly"
+            >
+            <small class="form-help">Username cannot be changed</small>
+          </div>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="<%= user.email %>" required />
+          <div class="form-group">
+            <label for="email">
+              <i class="fas fa-envelope"></i>
+              Email Address
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              value="<%= user.email %>" 
+              required 
+              class="form-input"
+            >
+          </div>
 
-    <button type="submit">Update Profile</button>
-  </form>
+          <% if (typeof message !== 'undefined') { %>
+            <div class="alert alert-success">
+              <i class="fas fa-check-circle"></i>
+              <%= message %>
+            </div>
+          <% } %>
+          
+          <% if (typeof error !== 'undefined') { %>
+            <div class="alert alert-error">
+              <i class="fas fa-exclamation-circle"></i>
+              <%= error %>
+            </div>
+          <% } %>
 
-  <% if (typeof message !== 'undefined') { %>
-    <p class="message"><%= message %></p>
-  <% } %>
-  <% if (typeof error !== 'undefined') { %>
-    <p class="error"><%= error %></p>
-  <% } %>
+          <div class="form-actions">
+            <a href="/" class="btn btn-outline">
+              <i class="fas fa-arrow-left"></i>
+              Back to Notes
+            </a>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i>
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="profile-section">
+        <h2>
+          <i class="fas fa-cog"></i>
+          Account Settings
+        </h2>
+        
+        <div class="settings-grid">
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Theme Preference</h3>
+              <p>Choose your preferred theme</p>
+            </div>
+            <div class="setting-control">
+              <button class="btn btn-outline" onclick="toggleTheme()">
+                <i class="fas fa-palette"></i>
+                Toggle Theme
+              </button>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <h3>Export Data</h3>
+              <p>Download all your notes</p>
+            </div>
+            <div class="setting-control">
+              <button class="btn btn-outline" onclick="exportNotes()">
+                <i class="fas fa-download"></i>
+                Export Notes
+              </button>
+            </div>
+          </div>
+
+          <div class="setting-item danger">
+            <div class="setting-info">
+              <h3>Delete Account</h3>
+              <p>Permanently delete your account and all data</p>
+            </div>
+            <div class="setting-control">
+              <button class="btn btn-danger" onclick="confirmDelete()">
+                <i class="fas fa-trash"></i>
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+  function exportNotes() {
+    // This would typically make an API call to export notes
+    alert('Export functionality would be implemented here');
+  }
+
+  function confirmDelete() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      if (confirm('This will permanently delete all your notes. Are you absolutely sure?')) {
+        // This would typically make an API call to delete the account
+        alert('Account deletion would be implemented here');
+      }
+    }
+  }
+</script>
